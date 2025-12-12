@@ -6,10 +6,27 @@ dotenv.config();
 
 const server = http.createServer((req, res) => {
 
-    res.writeHead(200, { "content-type": "text/plain" });
+    // demo header
+    // res.writeHead(200, { "content-type": "text/plain" });
 
-    res.end("hellow world");
+    // update header
+    res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'X-Powered-By': 'Node.js',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Set-Cookie': 'sessionid=abc123; HttpOnly'
+    });
 
+      // object কে stringify করে পাঠানো হচ্ছে
+    const responseData = {
+        user: {
+            name: "Rony Hossen",
+            age: 24,
+            status: "pending"
+        }
+    };
+
+    res.end(JSON.stringify(responseData))
 })
 
 
