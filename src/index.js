@@ -1,17 +1,18 @@
 import http from "http";
+import url from "url";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-  // console.log(req.method);
+  console.log(req.headers);
 
   // demo header
   // res.writeHead(200, { "content-type": "text/plain" });
 
   // update header
   res.writeHead(200, {
-    "Content-Type": "text/plain",
+    "Content-Type": "application/json",
     "X-Powered-By": "Node.js",
     "Cache-Control": "no-cache, no-store, must-revalidate",
     "Set-Cookie": "sessionid=abc123; HttpOnly",
@@ -36,9 +37,28 @@ const server = http.createServer((req, res) => {
 
   // res.end(`User Agent : ${userAgent}\nAccept Language : ${acceptLanguage}`);
 
-  const { url, method } = req;
+  // const { url, method } = req;
 
-  res.end(`You made a ${method} request to ${url}`);
+  // res.end(`You made a ${method} request to ${url}`);
+
+  const parsedUrl = url.parse(req.url, true);
+
+  // console.log(parsedUrl);
+
+  const pathname = parsedUrl.pathname;
+  const query = parsedUrl.query;
+
+  res.end(
+    JSON.stringify(
+      {
+        pathname,
+        query,
+        fullUrl: req.url,
+      },
+      null,
+      2
+    )
+  );
 });
 
 server.listen(process.env.PORT, "localhost", () => {
