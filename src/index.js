@@ -4,14 +4,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-  console.log(req.headers);
+  // console.log(req.headers);
 
   // demo header
   // res.writeHead(200, { "content-type": "text/plain" });
 
   // update header
   res.writeHead(200, {
-    "Content-Type": "application/json",
+    "Content-Type": "text/plain",
     "X-Powered-By": "Node.js",
     "Cache-Control": "no-cache, no-store, must-revalidate",
     "Set-Cookie": "sessionid=abc123; HttpOnly",
@@ -19,16 +19,22 @@ const server = http.createServer((req, res) => {
 
   // object কে stringify করে পাঠানো হচ্ছে
   // multiple users
-  const responseData = {
-    users: [
-      { name: "Rony Hossen", age: 24, status: "pending" },
-      { name: "Rony Hossen", age: 24, status: "pending" },
-      { name: "Rony Hossen", age: 24, status: "pending" },
-      { name: "Rony Hossen", age: 24, status: "pending" },
-    ],
-  };
 
-  res.end(JSON.stringify(responseData));
+  // const responseData = {
+  //   users: [
+  //     { name: "Rony Hossen", age: 24, status: "pending" },
+  //     { name: "Rony Hossen", age: 24, status: "pending" },
+  //     { name: "Rony Hossen", age: 24, status: "pending" },
+  //     { name: "Rony Hossen", age: 24, status: "pending" },
+  //   ],
+  // };
+
+  // res.end(JSON.stringify(responseData));
+
+  const userAgent = req.headers["user-agent"];
+  const acceptLanguage = req.headers["accept-language"];
+
+  res.end(`User Agent : ${userAgent}\nAccept Language : ${acceptLanguage}`);
 });
 
 server.listen(process.env.PORT, "localhost", () => {
