@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-  // console.log(req.headers);
+  // console.log(req.method);
 
   // demo header
   // res.writeHead(200, { "content-type": "text/plain" });
@@ -31,10 +31,14 @@ const server = http.createServer((req, res) => {
 
   // res.end(JSON.stringify(responseData));
 
-  const userAgent = req.headers["user-agent"];
-  const acceptLanguage = req.headers["accept-language"];
+  // const userAgent = req.headers["user-agent"];
+  // const acceptLanguage = req.headers["accept-language"];
 
-  res.end(`User Agent : ${userAgent}\nAccept Language : ${acceptLanguage}`);
+  // res.end(`User Agent : ${userAgent}\nAccept Language : ${acceptLanguage}`);
+
+  const { url, method } = req;
+
+  res.end(`You made a ${method} request to ${url}`);
 });
 
 server.listen(process.env.PORT, "localhost", () => {

@@ -7,7 +7,7 @@
     "start": "nodemon src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "CodeReview By Rony",
   "license": "ISC",
   "type": "module",
   "dependencies": {
