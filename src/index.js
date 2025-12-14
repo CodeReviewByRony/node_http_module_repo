@@ -122,6 +122,29 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(todos));
   }
+
+  // post request for path "/todos"
+  else if (method === "POST" && pathname === "/todos") {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", () => {
+      try {
+        const newTodo = JSON.parse(body);
+        newTodo.id =
+          todos.length > 0 ? Math.max(...todos.map((i) => i.id)) + 1 : 1;
+        todos.push(newTodo);
+        res.writeHead(201, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(newTodo));
+      } catch (error) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Invalid JSON" }));
+      }
+    });
+  }
 });
 
 server.listen(process.env.PORT, "localhost", () => {
