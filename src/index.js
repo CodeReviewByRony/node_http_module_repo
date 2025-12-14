@@ -91,8 +91,10 @@ dotenv.config();
 // });
 
 let todos = [
-  { id: 1, task: "Learn Node.js", completed: false },
-  { id: 2, task: "Build an API", completed: false },
+  { id: 1, task: "Design REST API using Node http module", completed: false },
+  { id: 2, task: "Handle JSON request body", completed: false },
+  { id: 3, task: "Test API using cURL", completed: false },
+  { id: 4, task: "Implement CORS handling", completed: false },
 ];
 
 const server = http.createServer((req, res) => {
@@ -173,6 +175,25 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify({ error: "Invalid JSON" }));
       }
     });
+  }
+
+  // Route: DELETE /todos/:id
+  else if (method === "DELETE" && pathname.startsWith("/todos/")) {
+    const id = Number(pathname.split("/")[2]);
+    const index = todos.findIndex((t) => t.id === id);
+
+    if (index === -1) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Todo not found" }));
+    } else {
+      todos = todos.filter((t) => t.id !== id);
+      res.writeHead(204);
+      res.end(JSON.stringify({ message: "element delete" }));
+    }
+  } // 404 Not Found
+  else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Not Found" }));
   }
 });
 
