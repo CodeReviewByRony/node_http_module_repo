@@ -1,3 +1,13 @@
+# SSL / TLS files
+*.pem
+*.key
+*.crt
+
+# Environment variables
+.env
+
+
+
 # Node modules
 node_modules/
 
