@@ -145,6 +145,35 @@ const server = http.createServer((req, res) => {
       }
     });
   }
+
+  // Route: PUT /todos/:id
+  else if (method === "PUT" && pathname.startsWith("/todos/")) {
+    const id = Number(pathname.split("/")[2]);
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", () => {
+      try {
+        let updateTodo = JSON.parse(body);
+        const index = todos.findIndex((t) => t.id === id);
+
+        if (index === -1) {
+          res.writeHead(404, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "todo not found" }));
+        } else {
+          todos[index] = { ...todos[index], ...updateTodo };
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify(todos[index]));
+        }
+      } catch (error) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Invalid JSON" }));
+      }
+    });
+  }
 });
 
 server.listen(process.env.PORT, "localhost", () => {
